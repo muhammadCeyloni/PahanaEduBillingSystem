@@ -29,21 +29,17 @@
         <p style="color:red;"><%= errorMsg %></p>
     <% } %>
 
-    <form name="registerForm" action="RegisterServlet" method="post" onsubmit="return validateRegisterForm()">
-        <label>Username:</label>
-        <input type="text" name="username" required><br><br>
+    <form action="RegisterServlet" method="post">
+    Username: <input type="text" name="username" /><br>
+    Password: <input type="password" name="password" /><br>
+    Role: 
+    <select name="role">
+        <option value="admin">Admin</option>
+        <option value="user">User</option>
+    </select><br>
+    <input type="submit" value="Register" />
+</form>
 
-        <label>Password:</label>
-        <input type="password" name="password" required><br><br>
-
-        <label>Role:</label>
-        <select name="role">
-            <option value="student">Student</option>
-            <option value="admin">Admin</option>
-        </select><br><br>
-
-        <button type="submit">Register</button>
-    </form>
 
     <br>
     <a href="login.jsp">Back to Login</a>
