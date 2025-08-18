@@ -22,11 +22,12 @@ try(Connection con=DBConnection.getConnection()){
 <body>
 <h2>Edit Item</h2>
 <form action="ItemUpdateServlet" method="post">
-  <input type="hidden" name="id" value="<%=id%>">
-  Title: <input name="title" value="<%=title%>" required><br><br>
-  Price: <input name="price" type="number" step="0.01" value="<%=price%>" required><br><br>
-  <button type="submit">Update</button>
+    <input type="hidden" name="itemId" value="${item.itemId}" />
+    Name: <input type="text" name="itemName" value="${item.itemName}" /><br>
+    Price: <input type="number" name="price" value="${item.price}" step="0.01" /><br>
+    <input type="submit" value="Update Item" />
 </form>
+
 <br>
 <a href="item_list.jsp">Back to Items</a>
 </body>
