@@ -7,6 +7,10 @@
 <body>
 <h2>Customer Accounts</h2>
 <a href="customer_add.jsp">➕ Add Customer</a> | <a href="welcome.jsp">Dashboard</a><br><br>
+<form action="CustomerDeleteServlet" method="post">
+    <input type="hidden" name="accountNo" value="${customer.accountNo}" />
+    <input type="submit" value="Delete" />
+</form>
 
 <table>
 <tr><th>ID</th><th>Account No</th><th>Name</th><th>Phone</th><th>Units</th><th>Actions</th></tr>

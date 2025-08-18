@@ -19,14 +19,14 @@ function validateCustomer(){
 <% String err=(String)request.getAttribute("errorMessage");
    if(err!=null){ %><p style="color:red;"><%=err%></p><% } %>
 
-<form name="custForm" action="CustomerAddServlet" method="post" onsubmit="return validateCustomer()">
-  Account No: <input name="account_no" required><br><br>
-  Name: <input name="name" required><br><br>
-  Address: <input name="address" required><br><br>
-  Phone: <input name="phone" required><br><br>
-  Units Consumed: <input type="number" name="units" value="0" min="0" required><br><br>
-  <button type="submit">Save</button>
+<form action="CustomerAddServlet" method="post">
+    Name: <input type="text" name="name" /><br>
+    Address: <input type="text" name="address" /><br>
+    Phone: <input type="text" name="phone" /><br>
+    Units Consumed: <input type="number" name="units" /><br>
+    <input type="submit" value="Add Customer" />
 </form>
+
 
 <br>
 <a href="customer_list.jsp">Back to Customer List</a>
