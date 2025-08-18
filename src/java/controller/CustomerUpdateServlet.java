@@ -1,46 +1,51 @@
 package controller;
 
-import dao.DBConnection;
+import dao.CustomerDAO;
+import dao.impl.CustomerJdbcDAO;
+import model.Customer;
+
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.*;
 
 @WebServlet("/CustomerUpdateServlet")
 public class CustomerUpdateServlet extends HttpServlet {
-  @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-    String idStr=req.getParameter("id");
-    String accountNo=req.getParameter("account_no");
-    String name=req.getParameter("name");
-    String address=req.getParameter("address");
-    String phone=req.getParameter("phone");
-    String unitsStr=req.getParameter("units");
+    private static final long serialVersionUID = 1L;
+    private CustomerDAO customerDAO;
 
-    int id=Integer.parseInt(idStr);
-    int units=Integer.parseInt(unitsStr);
-
-    try(Connection con=DBConnection.getConnection()){
-      PreparedStatement ps=con.prepareStatement(
-        "UPDATE customers SET account_no=?,name=?,address=?,phone=?,units_consumed=? WHERE id=?");
-      ps.setString(1, accountNo);
-      ps.setString(2, name);
-      ps.setString(3, address);
-      ps.setString(4, phone);
-      ps.setInt(5, units);
-      ps.setInt(6, id);
-
-      int r=ps.executeUpdate();
-      if(r>0) res.sendRedirect("customer_list.jsp");
-      else {
-        req.setAttribute("errorMessage","Failed to update customer.");
-        req.getRequestDispatcher("customer_edit.jsp?id="+id).forward(req,res);
-      }
-    } catch(SQLException e){
-      e.printStackTrace();
-      req.setAttribute("errorMessage","Database error.");
-      req.getRequestDispatcher("customer_edit.jsp?id="+id).forward(req,res);
+    @Override
+    public void init() throws ServletException {
+        customerDAO = new CustomerJdbcDAO(); // use DAO implementation
     }
-  }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            int accountNo = Integer.parseInt(request.getParameter("accountNo"));
+            String name = request.getParameter("name");
+            String address = request.getParameter("address");
+            String phone = request.getParameter("phone");
+            int units = Integer.parseInt(request.getParameter("units"));
+
+            Customer customer = new Customer(accountNo, name, address, phone, units);
+
+            boolean updated = customerDAO.updateCustomer(customer);
+
+            if (updated) {
+                request.setAttribute("successMessage", "✅ Customer updated successfully!");
+                request.getRequestDispatcher("customer_list.jsp").forward(request, response);
+            } else {
+                request.setAttribute("errorMessage", "⚠ Failed to update customer.");
+                request.getRequestDispatcher("customer_edit.jsp").forward(request, response);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "⚠ Error updating customer: " + e.getMessage());
+            request.getRequestDispatcher("customer_edit.jsp").forward(request, response);
+        }
+    }
 }

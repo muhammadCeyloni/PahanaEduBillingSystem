@@ -1,25 +1,44 @@
 package controller;
 
-import dao.DBConnection;
+import dao.CustomerDAO;
+import dao.impl.CustomerJdbcDAO;
+
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.*;
 
 @WebServlet("/CustomerDeleteServlet")
 public class CustomerDeleteServlet extends HttpServlet {
-  @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-    String idStr=req.getParameter("id");
-    int id=Integer.parseInt(idStr);
+    private static final long serialVersionUID = 1L;
+    private CustomerDAO customerDAO;
 
-    try(Connection con=DBConnection.getConnection()){
-      PreparedStatement ps=con.prepareStatement("DELETE FROM customers WHERE id=?");
-      ps.setInt(1,id);
-      ps.executeUpdate();
-    } catch(SQLException e){ e.printStackTrace(); }
+    @Override
+    public void init() throws ServletException {
+        customerDAO = new CustomerJdbcDAO();
+    }
 
-    res.sendRedirect("customer_list.jsp");
-  }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            int accountNo = Integer.parseInt(request.getParameter("accountNo"));
+            boolean deleted = customerDAO.deleteCustomer(accountNo);
+
+            if (deleted) {
+                request.setAttribute("successMessage", "✅ Customer deleted successfully!");
+            } else {
+                request.setAttribute("errorMessage", "⚠ Failed to delete customer.");
+            }
+
+            // Redirect back to customer list
+            request.getRequestDispatcher("customer_list.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "⚠ Error deleting customer: " + e.getMessage());
+            request.getRequestDispatcher("customer_list.jsp").forward(request, response);
+        }
+    }
 }
