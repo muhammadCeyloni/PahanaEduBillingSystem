@@ -1,25 +1,44 @@
 package controller;
 
-import dao.DBConnection;
+import dao.ItemDAO;
+import dao.impl.ItemJdbcDAO;
+
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.*;
 
 @WebServlet("/ItemDeleteServlet")
 public class ItemDeleteServlet extends HttpServlet {
-  @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-    String idStr=req.getParameter("id");
-    int id=Integer.parseInt(idStr);
+    private static final long serialVersionUID = 1L;
+    private ItemDAO itemDAO;
 
-    try(Connection con=DBConnection.getConnection()){
-      PreparedStatement ps=con.prepareStatement("DELETE FROM items WHERE item_id=?");
-      ps.setInt(1,id);
-      ps.executeUpdate();
-    } catch(SQLException e){ e.printStackTrace(); }
+    @Override
+    public void init() throws ServletException {
+        itemDAO = new ItemJdbcDAO();
+    }
 
-    res.sendRedirect("item_list.jsp");
-  }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            int itemId = Integer.parseInt(request.getParameter("itemId"));
+            boolean deleted = itemDAO.deleteItem(itemId);
+
+            if (deleted) {
+                request.setAttribute("successMessage", "✅ Item deleted successfully!");
+            } else {
+                request.setAttribute("errorMessage", "⚠ Failed to delete item.");
+            }
+
+            // Redirect back to item list
+            request.getRequestDispatcher("item_list.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "⚠ Error deleting item: " + e.getMessage());
+            request.getRequestDispatcher("item_list.jsp").forward(request, response);
+        }
+    }
 }

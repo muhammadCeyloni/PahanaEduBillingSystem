@@ -1,38 +1,50 @@
 package controller;
 
-import dao.DBConnection;
+import dao.ItemDAO;
+import dao.impl.ItemJdbcDAO;
+import model.Item;
+
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.*;
 
 @WebServlet("/ItemUpdateServlet")
 public class ItemUpdateServlet extends HttpServlet {
-  @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-    String idStr=req.getParameter("id");
-    String title=req.getParameter("title");
-    String priceStr=req.getParameter("price");
+    private static final long serialVersionUID = 1L;
+    private ItemDAO itemDAO;
 
-    int id=Integer.parseInt(idStr);
-    double price=Double.parseDouble(priceStr);
-
-    try(Connection con=DBConnection.getConnection()){
-      PreparedStatement ps=con.prepareStatement("UPDATE items SET title=?,price=? WHERE item_id=?");
-      ps.setString(1,title);
-      ps.setDouble(2,price);
-      ps.setInt(3,id);
-      int r=ps.executeUpdate();
-      if(r>0) res.sendRedirect("item_list.jsp");
-      else {
-        req.setAttribute("errorMessage","Failed to update item.");
-        req.getRequestDispatcher("item_edit.jsp?id="+id).forward(req,res);
-      }
-    } catch(SQLException e){
-      e.printStackTrace();
-      req.setAttribute("errorMessage","Database error.");
-      req.getRequestDispatcher("item_edit.jsp?id="+id).forward(req,res);
+    @Override
+    public void init() throws ServletException {
+        itemDAO = new ItemJdbcDAO(); // use DAO implementation
     }
-  }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            int itemId = Integer.parseInt(request.getParameter("itemId"));
+            String name = request.getParameter("name");
+            double price = Double.parseDouble(request.getParameter("price"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+            Item item = new Item(itemId, name, price, quantity);
+
+            boolean updated = itemDAO.updateItem(item);
+
+            if (updated) {
+                request.setAttribute("successMessage", "✅ Item updated successfully!");
+                request.getRequestDispatcher("item_list.jsp").forward(request, response);
+            } else {
+                request.setAttribute("errorMessage", "⚠ Failed to update item.");
+                request.getRequestDispatcher("item_edit.jsp").forward(request, response);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "⚠ Error updating item: " + e.getMessage());
+            request.getRequestDispatcher("item_edit.jsp").forward(request, response);
+        }
+    }
 }
