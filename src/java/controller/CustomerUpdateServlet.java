@@ -1,6 +1,6 @@
 package controller;
 
-import dao.DBConnection;
+import util.DBConnectionUtil;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -21,7 +21,7 @@ public class CustomerUpdateServlet extends HttpServlet {
     int id=Integer.parseInt(idStr);
     int units=Integer.parseInt(unitsStr);
 
-    try(Connection con=DBConnection.getConnection()){
+    try(Connection con=DBConnectionUtil.getConnection()){
       PreparedStatement ps=con.prepareStatement(
         "UPDATE customers SET account_no=?,name=?,address=?,phone=?,units_consumed=? WHERE id=?");
       ps.setString(1, accountNo);

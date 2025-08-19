@@ -1,6 +1,6 @@
 package controller;
 
-import dao.DBConnection;
+import util.DBConnectionUtil;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -14,7 +14,7 @@ public class CustomerDeleteServlet extends HttpServlet {
     String idStr=req.getParameter("id");
     int id=Integer.parseInt(idStr);
 
-    try(Connection con=DBConnection.getConnection()){
+    try(Connection con=DBConnectionUtil.getConnection()){
       PreparedStatement ps=con.prepareStatement("DELETE FROM customers WHERE id=?");
       ps.setInt(1,id);
       ps.executeUpdate();

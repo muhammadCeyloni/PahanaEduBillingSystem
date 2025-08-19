@@ -2,7 +2,7 @@ package dao.impl;
 
 import dao.BillDAO;
 import model.Bill;
-import util.DBConnection;
+import util.DBConnectionUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class BillJdbcDAO implements BillDAO {
     @Override
     public boolean saveBill(Bill bill) {
         String sql = "INSERT INTO bills (customerId, units, amount) VALUES (?, ?, ?)";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DBConnectionUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, bill.getCustomer().getId());
             stmt.setInt(2, bill.getUnits());
@@ -57,7 +57,7 @@ public class BillJdbcDAO implements BillDAO {
     public List<Bill> getBillsByCustomerId(int customerId) {
         List<Bill> bills = new ArrayList<>();
         String sql = "SELECT * FROM bills WHERE customerId=?";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DBConnectionUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, customerId);
             ResultSet rs = stmt.executeQuery();
