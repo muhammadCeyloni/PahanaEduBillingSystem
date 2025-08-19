@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Login - Pahana Edu</title>
+    <link rel="stylesheet" href="css/style.css">
     <script>
         function validateLoginForm() {
             let username = document.forms["loginForm"]["username"].value;

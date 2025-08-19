@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>User Registration - Pahana Edu</title>
+    <link rel="stylesheet" href="css/style.css">
     <script>
         function validateRegisterForm() {
             let username = document.forms["registerForm"]["username"].value;
