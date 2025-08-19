@@ -1,4 +1,7 @@
 package service;
+
+import model.Bill;
+
 public interface BillingService {
-  double computeBill(int units);
+    Bill generateBill(int accountNo, int units);
 }

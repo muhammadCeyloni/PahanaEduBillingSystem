@@ -1,6 +1,6 @@
 package controller;
 
-import dao.DBConnection;
+import util.DBConnectionUtil;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -28,7 +28,7 @@ public class ItemAddServlet extends HttpServlet {
       return;
     }
 
-    try(Connection con=DBConnection.getConnection()){
+    try(Connection con=DBConnectionUtil.getConnection()){
       PreparedStatement ps=con.prepareStatement("INSERT INTO items(title,price) VALUES(?,?)");
       ps.setString(1, title.trim());
       ps.setDouble(2, price);

@@ -2,11 +2,16 @@
 <%@ page import="java.sql.*, dao.DBConnection" %>
 <!DOCTYPE html>
 <html><head><title>Items</title>
+        <link rel="stylesheet" href="css/style.css">
 <style>table,th,td{border:1px solid #333;border-collapse:collapse;padding:6px}</style>
 </head>
 <body>
 <h2>Items</h2>
 <a href="item_add.jsp">➕ Add Item</a> | <a href="welcome.jsp">Dashboard</a><br><br>
+<form action="ItemDeleteServlet" method="post">
+    <input type="hidden" name="itemId" value="${item.itemId}" />
+    <input type="submit" value="Delete" />
+</form>
 
 <table>
 <tr><th>ID</th><th>Title</th><th>Price</th><th>Actions</th></tr>

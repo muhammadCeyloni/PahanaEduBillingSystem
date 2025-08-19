@@ -4,6 +4,7 @@
 <html>
 <head>
   <title>Bill</title>
+  <link rel="stylesheet" href="css/style.css">
   <style>
     .bill{width:420px;border:1px solid #333;padding:12px}
     .hdr{font-weight:bold;margin-bottom:10px}

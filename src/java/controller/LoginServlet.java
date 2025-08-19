@@ -1,6 +1,6 @@
 package controller;
 
-import dao.DBConnection;
+import util.DBConnectionUtil;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +17,7 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        try (Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DBConnectionUtil.getConnection()) {
             String sql = "SELECT * FROM users WHERE username=? AND password=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);

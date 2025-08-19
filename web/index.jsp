@@ -3,6 +3,7 @@
 <html>
   <head>
     <title>Pahana Edu Billing System</title>
+    <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
     <h1>Hello from Pahana Edu Billing System (JSP)!</h1>

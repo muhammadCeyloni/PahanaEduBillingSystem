@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Login - Pahana Edu</title>
+    <link rel="stylesheet" href="css/style.css">
     <script>
         function validateLoginForm() {
             let username = document.forms["loginForm"]["username"].value;
@@ -29,14 +30,10 @@
         <p style="color:red;"><%= errorMsg %></p>
     <% } %>
 
-    <form name="loginForm" action="LoginServlet" method="post" onsubmit="return validateLoginForm()">
-        <label>Username:</label>
-        <input type="text" name="username" required><br><br>
-
-        <label>Password:</label>
-        <input type="password" name="password" required><br><br>
-
-        <button type="submit">Login</button>
+    <form action="LoginServlet" method="post">
+        Username: <input type="text" name="username" /><br>
+        Password: <input type="password" name="password" /><br>
+        <input type="submit" value="Login" />
     </form>
 
     <br>

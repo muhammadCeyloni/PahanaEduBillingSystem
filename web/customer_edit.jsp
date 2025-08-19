@@ -22,18 +22,19 @@ try(Connection con=DBConnection.getConnection()){
 %>
 <!DOCTYPE html>
 <html>
-<head><title>Edit Customer</title></head>
+<head><title>Edit Customer</title>
+<link rel="stylesheet" href="css/style.css"></head>
 <body>
 <h2>Edit Customer</h2>
 <form action="CustomerUpdateServlet" method="post">
-  <input type="hidden" name="id" value="<%=id%>">
-  Account No: <input name="account_no" value="<%=accountNo%>" required><br><br>
-  Name: <input name="name" value="<%=name%>" required><br><br>
-  Address: <input name="address" value="<%=address%>" required><br><br>
-  Phone: <input name="phone" value="<%=phone%>" required><br><br>
-  Units Consumed: <input type="number" name="units" value="<%=units%>" required><br><br>
-  <button type="submit">Update</button>
+    <input type="hidden" name="accountNo" value="${customer.accountNo}" />
+    Name: <input type="text" name="name" value="${customer.name}" /><br>
+    Address: <input type="text" name="address" value="${customer.address}" /><br>
+    Phone: <input type="text" name="phone" value="${customer.phone}" /><br>
+    Units: <input type="number" name="units" value="${customer.units}" /><br>
+    <input type="submit" value="Update Customer" />
 </form>
+
 <br>
 <a href="customer_list.jsp">Back to Customers</a>
 </body>

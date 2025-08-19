@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html><head><title>Add Item</title>
+        <link rel="stylesheet" href="css/style.css">
 <script>
 function validateItem(){
   const title = document.forms["itemForm"]["title"].value.trim();
@@ -16,11 +17,12 @@ function validateItem(){
 <% String err=(String)request.getAttribute("errorMessage");
    if(err!=null){ %><p style="color:red;"><%=err%></p><% } %>
 
-<form name="itemForm" action="ItemAddServlet" method="post" onsubmit="return validateItem()">
-  Title: <input name="title" required><br><br>
-  Price: <input name="price" type="number" step="0.01" required><br><br>
-  <button type="submit">Save</button>
+<form action="ItemAddServlet" method="post">
+    Item Name: <input type="text" name="itemName" /><br>
+    Price: <input type="number" name="price" step="0.01" /><br>
+    <input type="submit" value="Add Item" />
 </form>
+
 
 <br><a href="item_list.jsp">Back to Items</a>
 </body></html>

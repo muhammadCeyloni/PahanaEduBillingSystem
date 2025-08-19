@@ -1,46 +1,47 @@
 package controller;
 
-import dao.DBConnection;
+import dao.CustomerDAO;
+import dao.impl.CustomerJdbcDAO;
+import model.Customer;
+
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.*;
 
-@WebServlet("/CustomerUpdateServlet")
+@WebServlet(name = "CustomerUpdateServlet", urlPatterns = {"/CustomerUpdateServlet"})
 public class CustomerUpdateServlet extends HttpServlet {
-  @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-    String idStr=req.getParameter("id");
-    String accountNo=req.getParameter("account_no");
-    String name=req.getParameter("name");
-    String address=req.getParameter("address");
-    String phone=req.getParameter("phone");
-    String unitsStr=req.getParameter("units");
 
-    int id=Integer.parseInt(idStr);
-    int units=Integer.parseInt(unitsStr);
+    private final CustomerDAO customerDAO = new CustomerJdbcDAO();
 
-    try(Connection con=DBConnection.getConnection()){
-      PreparedStatement ps=con.prepareStatement(
-        "UPDATE customers SET account_no=?,name=?,address=?,phone=?,units_consumed=? WHERE id=?");
-      ps.setString(1, accountNo);
-      ps.setString(2, name);
-      ps.setString(3, address);
-      ps.setString(4, phone);
-      ps.setInt(5, units);
-      ps.setInt(6, id);
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-      int r=ps.executeUpdate();
-      if(r>0) res.sendRedirect("customer_list.jsp");
-      else {
-        req.setAttribute("errorMessage","Failed to update customer.");
-        req.getRequestDispatcher("customer_edit.jsp?id="+id).forward(req,res);
-      }
-    } catch(SQLException e){
-      e.printStackTrace();
-      req.setAttribute("errorMessage","Database error.");
-      req.getRequestDispatcher("customer_edit.jsp?id="+id).forward(req,res);
+        String accountNoStr = request.getParameter("accountNo");
+        String name         = request.getParameter("name");
+        String address      = request.getParameter("address");
+        String phone        = request.getParameter("phone");
+        String unitsStr     = request.getParameter("units");
+
+        try {
+            int accountNo = Integer.parseInt(accountNoStr);
+            int units     = Integer.parseInt(unitsStr);
+
+            // Expecting Customer model to have this constructor + getters/setters
+            Customer customer = new Customer(accountNo, name, address, phone, units);
+
+            boolean ok = customerDAO.updateCustomer(customer);
+            if (ok) {
+                // Go back to customer list (adjust path if your JSP differs)
+                response.sendRedirect("customer_list.jsp?msg=updated");
+            } else {
+                request.setAttribute("error", "Update failed (no rows affected).");
+                request.getRequestDispatcher("customer_edit.jsp").forward(request, response);
+            }
+        } catch (Exception ex) {
+            request.setAttribute("error", "Invalid data: " + ex.getMessage());
+            request.getRequestDispatcher("customer_edit.jsp").forward(request, response);
+        }
     }
-  }
 }
