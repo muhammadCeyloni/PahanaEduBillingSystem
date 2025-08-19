@@ -22,7 +22,8 @@ try(Connection con=DBConnection.getConnection()){
 %>
 <!DOCTYPE html>
 <html>
-<head><title>Edit Customer</title></head>
+<head><title>Edit Customer</title>
+<link rel="stylesheet" href="css/style.css"></head>
 <body>
 <h2>Edit Customer</h2>
 <form action="CustomerUpdateServlet" method="post">

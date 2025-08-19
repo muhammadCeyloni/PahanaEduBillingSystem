@@ -2,6 +2,7 @@
 <%@ page import="java.sql.*, dao.DBConnection" %>
 <!DOCTYPE html>
 <html><head><title>Customers</title>
+        <link rel="stylesheet" href="css/style.css">
 <style>table,th,td{border:1px solid #333;border-collapse:collapse;padding:6px}</style>
 </head>
 <body>

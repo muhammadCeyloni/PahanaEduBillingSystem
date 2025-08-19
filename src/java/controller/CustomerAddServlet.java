@@ -1,6 +1,6 @@
 package controller;
 
-import dao.DBConnection;
+import util.DBConnectionUtil;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -36,7 +36,7 @@ public class CustomerAddServlet extends HttpServlet {
       return;
     }
 
-    try(Connection con = DBConnection.getConnection()){
+    try(Connection con = DBConnectionUtil.getConnection()){
       String sql = "INSERT INTO customers(account_no,name,address,phone,units_consumed) VALUES(?,?,?,?,?)";
       PreparedStatement ps = con.prepareStatement(sql);
       ps.setString(1, accountNo.trim());
