@@ -1,7 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, dao.DBConnection" %>
 <!DOCTYPE html>
-<html><head><title>Calculate Bill</title></head>
+<html><head><title>Calculate Bill</title>
+    <link rel="stylesheet" href="css/style.css">
+    </head>
 <body>
 <%
 String id = request.getParameter("id"); // customer_id
