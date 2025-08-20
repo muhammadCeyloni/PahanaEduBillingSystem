@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class DBConnectionUtil {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/pahana_edu?useSSL=false&serverTimezone=UTC";  // replace with your DB name
-    private static final String USER = "root";   // your MySQL username
-    private static final String PASSWORD = "";   // your MySQL password (leave empty if none)
+    private static final String URL = "jdbc:mysql://localhost:3306/pahana_edu?useSSL=false&serverTimezone=UTC";  // my DB name
+    private static final String USER = "root";   // my MySQL username
+    private static final String PASSWORD = "";   // my MySQL password (leave empty if none)
 
     static {
         try {

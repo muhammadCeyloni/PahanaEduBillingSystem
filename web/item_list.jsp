@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, dao.DBConnection" %>
+<%@ page import="java.sql.*, util.DBConnectionUtil" %>
 <!DOCTYPE html>
 <html><head><title>Items</title>
         <link rel="stylesheet" href="css/style.css">
@@ -16,7 +16,7 @@
 <table>
 <tr><th>ID</th><th>Title</th><th>Price</th><th>Actions</th></tr>
 <%
-try(Connection con=DBConnection.getConnection()){
+try(Connection con=DBConnectionUtil.getConnection()){
   ResultSet rs = con.prepareStatement("SELECT * FROM items ORDER BY item_id DESC").executeQuery();
   while(rs.next()){
 %>

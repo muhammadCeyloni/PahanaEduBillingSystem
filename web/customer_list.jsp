@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, dao.DBConnection" %>
+<%@ page import="java.sql.*, util.DBConnectionUtil" %>
 <!DOCTYPE html>
 <html><head><title>Customers</title>
         <link rel="stylesheet" href="css/style.css">
@@ -16,7 +16,7 @@
 <table>
 <tr><th>ID</th><th>Account No</th><th>Name</th><th>Phone</th><th>Units</th><th>Actions</th></tr>
 <%
-try(Connection con=DBConnection.getConnection()){
+try(Connection con=DBConnectionUtil.getConnection()){
   PreparedStatement ps=con.prepareStatement("SELECT * FROM customers ORDER BY id DESC");
   ResultSet rs=ps.executeQuery();
   while(rs.next()){

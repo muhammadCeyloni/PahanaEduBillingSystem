@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, dao.DBConnection" %>
+<%@ page import="java.sql.*, util.DBConnectionUtil" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +19,7 @@ String accountNo="", name="";
 int units=0;
 double amount=0;
 
-try(Connection con=DBConnection.getConnection()){
+try(Connection con=DBConnectionUtil.getConnection()){
   PreparedStatement ps=con.prepareStatement(
     "SELECT b.units,b.amount,c.account_no,c.name FROM bills b JOIN customers c ON b.customer_id=c.id WHERE b.bill_id=?");
   ps.setInt(1,billId);

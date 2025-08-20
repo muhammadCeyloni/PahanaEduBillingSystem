@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, dao.DBConnection" %>
+<%@ page import="java.sql.*, util.DBConnectionUtil" %>
 <%
 String idStr = request.getParameter("id");
 int id = Integer.parseInt(idStr);
@@ -7,7 +7,7 @@ int id = Integer.parseInt(idStr);
 String accountNo="", name="", address="", phone="";
 int units=0;
 
-try(Connection con=DBConnection.getConnection()){
+try(Connection con=DBConnectionUtil.getConnection()){
   PreparedStatement ps=con.prepareStatement("SELECT * FROM customers WHERE id=?");
   ps.setInt(1, id);
   ResultSet rs=ps.executeQuery();

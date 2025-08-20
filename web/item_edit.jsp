@@ -1,21 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, util.DBConnectionUtil" %>
-<%
-String idStr=request.getParameter("id");
-int id=Integer.parseInt(idStr);
 
-String title=""; double price=0;
-
-try(Connection con=DBConnectionUtil.getConnection()){
-  PreparedStatement ps=con.prepareStatement("SELECT * FROM items WHERE item_id=?");
-  ps.setInt(1,id);
-  ResultSet rs=ps.executeQuery();
-  if(rs.next()){
-    title=rs.getString("title");
-    price=rs.getDouble("price");
-  }
-} catch(Exception e){ e.printStackTrace(); }
-%>
 <!DOCTYPE html>
 <html>
 <head><title>Edit Item</title>
@@ -41,6 +26,22 @@ try(Connection con=DBConnectionUtil.getConnection()){
    <p style="color:green;"><%= ok %></p>
 <% } %>
 
+<%
+String idStr=request.getParameter("id");
+int id=Integer.parseInt(idStr);
+
+String title=""; double price=0;
+
+try(Connection con=DBConnectionUtil.getConnection()){
+  PreparedStatement ps=con.prepareStatement("SELECT * FROM items WHERE item_id=?");
+  ps.setInt(1,id);
+  ResultSet rs=ps.executeQuery();
+  if(rs.next()){
+    title=rs.getString("title");
+    price=rs.getDouble("price");
+  }
+} catch(Exception e){ e.printStackTrace(); }
+%>
 <br>
 <a href="item_list.jsp">Back to Items</a>
 </body>

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, dao.DBConnection" %>
+<%@ page import="java.sql.*, util.DBConnectionUtil" %>
 <!DOCTYPE html>
 <html><head><title>Calculate Bill</title>
     <link rel="stylesheet" href="css/style.css">
@@ -11,7 +11,7 @@ int customerId = Integer.parseInt(id);
 String accountNo="", name="";
 int currentUnits=0;
 
-try(Connection con=DBConnection.getConnection()){
+try(Connection con=DBConnectionUtil.getConnection()){
   PreparedStatement ps=con.prepareStatement("SELECT * FROM customers WHERE id=?");
   ps.setInt(1, customerId);
   ResultSet rs=ps.executeQuery();
